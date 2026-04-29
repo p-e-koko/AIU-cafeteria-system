@@ -1,8 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { LayoutDashboard, Utensils, MessageSquare, ClipboardList, LogIn, UserPlus } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, Utensils, MessageSquare, ClipboardList, LogOut, Shield } from 'lucide-react';
 
-const Navbar = () => {
+const Navbar = ({ user, onLogout }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    onLogout();
+    navigate('/login');
+  };
+
   return (
     <nav className="bg-white border-b border-gray-200 fixed w-full z-30 top-0">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -13,14 +20,20 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="flex items-center space-x-4">
-            <Link to="/login" className="flex items-center text-gray-600 hover:text-blue-600">
-              <LogIn className="w-5 h-5 mr-1" />
-              <span>Login</span>
-            </Link>
-            <Link to="/register" className="flex items-center bg-blue-600 text-white px-3 py-1.5 rounded-md hover:bg-blue-700">
-              <UserPlus className="w-5 h-5 mr-1" />
-              <span>Register</span>
-            </Link>
+            {user && (
+              <>
+                <span className="text-sm text-gray-600">
+                  {user.name} <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded ml-2">{user.role}</span>
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center text-gray-600 hover:text-red-600 transition"
+                >
+                  <LogOut className="w-5 h-5 mr-1" />
+                  <span>Logout</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -28,13 +41,21 @@ const Navbar = () => {
   );
 };
 
-const Sidebar = () => {
-  const menuItems = [
+const Sidebar = ({ user }) => {
+  const baseMenuItems = [
     { icon: <LayoutDashboard className="w-5 h-5" />, label: 'Dashboard', path: '/' },
     { icon: <Utensils className="w-5 h-5" />, label: 'Menu Suggestions', path: '/suggestions' },
     { icon: <MessageSquare className="w-5 h-5" />, label: 'Feedback', path: '/feedback' },
     { icon: <ClipboardList className="w-5 h-5" />, label: 'Summaries', path: '/summaries' },
   ];
+
+  const adminMenuItems = [
+    { icon: <Shield className="w-5 h-5" />, label: 'Admin Dashboard', path: '/admin/dashboard' },
+    { icon: <ClipboardList className="w-5 h-5" />, label: 'Suggestion Review', path: '/admin/suggestions' },
+    { icon: <MessageSquare className="w-5 h-5" />, label: 'Analytics', path: '/admin/analytics' },
+  ];
+
+  const menuItems = user?.role === 'Admin' ? [...baseMenuItems, ...adminMenuItems] : baseMenuItems;
 
   return (
     <aside className="fixed top-0 left-0 z-20 flex flex-col flex-shrink-0 w-64 h-full pt-16 font-normal duration-75 lg:flex transition-width" aria-label="Sidebar">

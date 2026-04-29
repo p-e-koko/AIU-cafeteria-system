@@ -1,23 +1,34 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import LoginPage from './LoginPage';
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+  };
+
+  if (!user) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Welcome, {user.name}!</h1>
+        <p>AIU Cafeteria System</p>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </header>
+      <main className="App-main">
+        <p>Dashboard coming soon...</p>
+      </main>
     </div>
   );
 }

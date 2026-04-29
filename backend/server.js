@@ -64,7 +64,7 @@ const initializeDatabase = async () => {
 };
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3333;
 
 const startServer = async () => {
   await initializeDatabase();

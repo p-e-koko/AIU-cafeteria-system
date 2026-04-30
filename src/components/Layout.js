@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Utensils, MessageSquare, ClipboardList, LogOut, Shield } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { LayoutDashboard, Utensils, MessageSquare, ClipboardList, LogOut, Shield, ChevronRight } from 'lucide-react';
 
 const Navbar = ({ user, onLogout }) => {
   const navigate = useNavigate();
@@ -11,28 +11,33 @@ const Navbar = ({ user, onLogout }) => {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 fixed w-full z-30 top-0">
-      <div className="px-3 py-3 lg:px-5 lg:pl-3">
+    <nav className="bg-white border-b border-slate-200 fixed w-full z-30 top-0">
+      <div className="px-4 py-3 lg:px-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center justify-start">
-            <Link to="/" className="flex ml-2 md:mr-24 font-bold text-xl text-blue-600">
-              AIU Cafeteria
+          <div className="flex items-center space-x-4">
+            <Link to="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-[#1e3a8a] rounded flex items-center justify-center">
+                <Utensils className="text-white w-5 h-5" />
+              </div>
+              <span className="font-bold text-xl tracking-tight text-slate-900 hidden sm:block">AIU Cafeteria</span>
             </Link>
           </div>
+          
           <div className="flex items-center space-x-4">
             {user && (
-              <>
-                <span className="text-sm text-gray-600">
-                  {user.name} <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded ml-2">{user.role}</span>
-                </span>
+              <div className="flex items-center space-x-4">
+                <div className="hidden md:flex flex-col items-end mr-2">
+                  <span className="text-sm font-semibold text-slate-900">{user.name}</span>
+                  <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400">{user.role}</span>
+                </div>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center text-gray-600 hover:text-red-600 transition"
+                  className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-200"
+                  title="Logout"
                 >
-                  <LogOut className="w-5 h-5 mr-1" />
-                  <span>Logout</span>
+                  <LogOut className="w-5 h-5" />
                 </button>
-              </>
+              </div>
             )}
           </div>
         </div>
@@ -42,6 +47,8 @@ const Navbar = ({ user, onLogout }) => {
 };
 
 const Sidebar = ({ user }) => {
+  const location = useLocation();
+  
   const baseMenuItems = [
     { icon: <LayoutDashboard className="w-5 h-5" />, label: 'Dashboard', path: '/' },
     { icon: <Utensils className="w-5 h-5" />, label: 'Menu Suggestions', path: '/suggestions' },
@@ -59,26 +66,48 @@ const Sidebar = ({ user }) => {
 
   return (
     <aside className="fixed top-0 left-0 z-20 flex flex-col flex-shrink-0 w-64 h-full pt-16 font-normal duration-75 lg:flex transition-width" aria-label="Sidebar">
-      <div className="relative flex flex-col flex-1 min-h-0 pt-0 bg-white border-r border-gray-200">
-        <div className="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
-          <div className="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200">
-            <ul className="pb-2 space-y-2">
-              {menuItems.map((item) => (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group"
-                  >
-                    <span className="text-gray-500 transition duration-75 group-hover:text-gray-900">
-                      {item.icon}
-                    </span>
-                    <span className="ml-3">{item.label}</span>
-                  </Link>
-                </li>
-              ))}
+      <div className="relative flex flex-col flex-1 min-h-0 pt-0 bg-white border-r border-slate-200">
+        <div className="flex flex-col flex-1 pt-6 pb-4 overflow-y-auto">
+          <div className="flex-1 px-3 space-y-1 bg-white">
+            <ul className="space-y-1.5">
+              {menuItems.map((item) => {
+                const isActive = location.pathname === item.path;
+                return (
+                  <li key={item.path}>
+                    <Link
+                      to={item.path}
+                      className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 group ${
+                        isActive 
+                          ? 'bg-blue-50 text-[#1e3a8a]' 
+                          : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                      }`}
+                    >
+                      <span className={`transition duration-75 ${isActive ? 'text-[#1e3a8a]' : 'text-slate-400 group-hover:text-slate-900'}`}>
+                        {item.icon}
+                      </span>
+                      <span className="ml-3 flex-1">{item.label}</span>
+                      {isActive && <ChevronRight className="w-4 h-4 opacity-50" />}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
+        
+        {user && (
+          <div className="p-4 border-t border-slate-100">
+            <div className="flex items-center space-x-3 px-2">
+              <div className="w-8 h-8 rounded-full bg-[#1e3a8a] flex items-center justify-center text-white font-bold text-xs">
+                {user.name.charAt(0)}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-slate-900 truncate">{user.name}</p>
+                <p className="text-xs text-slate-500 truncate">{user.email}</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </aside>
   );

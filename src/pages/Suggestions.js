@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { suggestionService } from '../services/api';
-import { Utensils, Send, CheckCircle, AlertCircle, Clock, Check, X } from 'lucide-react';
+import { Utensils, Send, CheckCircle, AlertCircle, Clock, Search, Filter } from 'lucide-react';
 
 const Suggestions = ({ user }) => {
   const [suggestions, setSuggestions] = useState([]);
@@ -8,7 +8,6 @@ const Suggestions = ({ user }) => {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   
-  // Form state
   const [formData, setFormData] = useState({
     dishName: '',
     mealType: 'Lunch',
@@ -37,13 +36,13 @@ const Suggestions = ({ user }) => {
 
     try {
       await suggestionService.submit(formData);
-      setMessage({ type: 'success', text: 'Suggestion submitted successfully!' });
+      setMessage({ type: 'success', text: 'Your suggestion has been received!' });
       setFormData({ dishName: '', mealType: 'Lunch', description: '' });
-      fetchSuggestions(); // Refresh list
+      fetchSuggestions();
     } catch (error) {
       setMessage({ 
         type: 'error', 
-        text: error.response?.data?.message || 'Failed to submit suggestion. Please try again.' 
+        text: error.response?.data?.message || 'Something went wrong. Please try again.' 
       });
     } finally {
       setSubmitting(false);
@@ -52,58 +51,52 @@ const Suggestions = ({ user }) => {
 
   const getStatusBadge = (status) => {
     const styles = {
-      Pending: 'bg-yellow-100 text-yellow-800',
-      Approved: 'bg-green-100 text-green-800',
-      Rejected: 'bg-red-100 text-red-800'
+      Pending: 'bg-amber-50 text-amber-700 border-amber-100',
+      Approved: 'bg-emerald-50 text-emerald-700 border-emerald-100',
+      Rejected: 'bg-rose-50 text-rose-700 border-rose-100'
     };
     
-    const icons = {
-      Pending: <Clock className="w-3 h-3 mr-1" />,
-      Approved: <Check className="w-3 h-3 mr-1" />,
-      Rejected: <X className="w-3 h-3 mr-1" />
-    };
-
     return (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${styles[status]}`}>
-        {icons[status]}
+      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${styles[status]}`}>
         {status}
       </span>
     );
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      {/* Header */}
-      <div className="flex items-center space-x-3 mb-6">
-        <Utensils className="w-8 h-8 text-blue-600" />
-        <h1 className="text-3xl font-bold text-gray-900">Menu Suggestions</h1>
+    <div className="max-w-5xl mx-auto space-y-10 animate-in fade-in duration-500">
+      {/* Hero Section */}
+      <div className="flex flex-col space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Menu Suggestions</h1>
+        <p className="text-slate-500">Help us improve your dining experience by suggesting new dishes.</p>
       </div>
 
-      {/* Submission Form */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="p-6">
-          <h2 className="text-xl font-semibold mb-4 flex items-center">
-            <Send className="w-5 h-5 mr-2 text-blue-500" />
-            Suggest a New Dish
-          </h2>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Dish Name</label>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left Column: Form */}
+        <div className="lg:col-span-1">
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 sticky top-24">
+            <h2 className="text-lg font-semibold mb-6 flex items-center text-slate-900">
+              <Send className="w-4 h-4 mr-2 text-[#1e3a8a]" />
+              New Suggestion
+            </h2>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-slate-700">Dish Name</label>
                 <input
                   type="text"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="e.g., Spicy Basil Chicken"
+                  className="input-shadcn"
+                  placeholder="e.g., Tom Yum Pasta"
                   value={formData.dishName}
                   onChange={(e) => setFormData({ ...formData, dishName: e.target.value })}
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Meal Type</label>
+
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-slate-700">Meal Category</label>
                 <select
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="input-shadcn"
                   value={formData.mealType}
                   onChange={(e) => setFormData({ ...formData, mealType: e.target.value })}
                 >
@@ -112,74 +105,110 @@ const Suggestions = ({ user }) => {
                   <option value="Dinner">Dinner</option>
                 </select>
               </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Reason / Description</label>
-              <textarea
-                required
-                rows="3"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Why should this be added to the menu?"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              ></textarea>
-            </div>
 
-            {message.text && (
-              <div className={`p-4 rounded-lg flex items-center ${
-                message.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-              }`}>
-                {message.type === 'success' ? <CheckCircle className="w-5 h-5 mr-2" /> : <AlertCircle className="w-5 h-5 mr-2" />}
-                {message.text}
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-slate-700">Why suggest this?</label>
+                <textarea
+                  required
+                  rows="4"
+                  className="input-shadcn h-auto py-3"
+                  placeholder="Describe the dish and why students would like it..."
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                ></textarea>
               </div>
-            )}
 
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full md:w-auto px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition disabled:opacity-50 flex items-center justify-center"
-            >
-              {submitting ? 'Submitting...' : 'Submit Suggestion'}
-            </button>
-          </form>
+              {message.text && (
+                <div className={`p-3 rounded-md text-sm flex items-start animate-in slide-in-from-top-1 ${
+                  message.type === 'success' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'
+                }`}>
+                  {message.type === 'success' ? <CheckCircle className="w-4 h-4 mr-2 mt-0.5" /> : <AlertCircle className="w-4 h-4 mr-2 mt-0.5" />}
+                  {message.text}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full btn-primary flex items-center justify-center space-x-2 h-11"
+              >
+                {submitting ? 'Submitting...' : (
+                  <>
+                    <span>Submit to Admin</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
 
-      {/* Suggestions List */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold flex items-center">
-          <Utensils className="w-5 h-5 mr-2 text-gray-600" />
-          Recent Suggestions
-        </h2>
-
-        {loading ? (
-          <div className="text-center py-8">Loading suggestions...</div>
-        ) : suggestions.length === 0 ? (
-          <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-            No suggestions yet. Be the first to suggest something!
+        {/* Right Column: List */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-lg font-semibold text-slate-900">Community Suggestions</h2>
+            <div className="flex space-x-2">
+              <button className="p-2 text-slate-400 hover:text-slate-600 rounded-md border border-slate-200 bg-white">
+                <Filter className="w-4 h-4" />
+              </button>
+              <button className="p-2 text-slate-400 hover:text-slate-600 rounded-md border border-slate-200 bg-white">
+                <Search className="w-4 h-4" />
+              </button>
+            </div>
           </div>
-        ) : (
-          <div className="grid gap-4">
-            {suggestions.map((s) => (
-              <div key={s.id} className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900">{s.dishName}</h3>
-                    <p className="text-sm text-gray-500">{s.mealType} • Suggested by {s.user?.name || 'User'}</p>
+
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-slate-200">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1e3a8a] mb-4"></div>
+              <p className="text-slate-400 text-sm">Refreshing menu ideas...</p>
+            </div>
+          ) : suggestions.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-dashed border-slate-300">
+              <Utensils className="w-12 h-12 text-slate-200 mb-4" />
+              <p className="text-slate-500 font-medium">No suggestions yet</p>
+              <p className="text-slate-400 text-sm">Be the first to propose a new meal!</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {suggestions.map((s, index) => (
+                <div 
+                  key={s.id} 
+                  className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-300 animate-in fade-in slide-in-from-bottom-2"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <div className="flex items-center space-x-3 mb-1">
+                        <h3 className="text-lg font-bold text-slate-900 leading-tight">{s.dishName}</h3>
+                        {getStatusBadge(s.status)}
+                      </div>
+                      <div className="flex items-center text-xs text-slate-400 space-x-2">
+                        <span className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-600 font-semibold">{s.mealType}</span>
+                        <span>•</span>
+                        <span>By {s.user?.name || 'Anonymous'}</span>
+                      </div>
+                    </div>
                   </div>
-                  {getStatusBadge(s.status)}
+                  <p className="text-slate-600 leading-relaxed text-sm">{s.description}</p>
+                  <div className="mt-4 pt-4 border-t border-slate-50 flex justify-between items-center text-[10px] text-slate-400 uppercase tracking-widest font-bold">
+                    <span>{new Date(s.createdAt).toLocaleDateString()}</span>
+                    <span className="flex items-center">
+                      <Clock className="w-3 h-3 mr-1" />
+                      {new Date(s.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
                 </div>
-                <p className="text-gray-700 mt-2">{s.description}</p>
-                <div className="mt-3 text-xs text-gray-400">
-                  {new Date(s.createdAt).toLocaleDateString()} at {new Date(s.createdAt).toLocaleTimeString()}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 };
+
+const ChevronRight = ({ className }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+);
 
 export default Suggestions;

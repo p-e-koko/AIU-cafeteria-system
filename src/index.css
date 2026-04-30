@@ -5,24 +5,40 @@
 @tailwind utilities;
 
 :root {
-  --primary: 221.2 83.2% 33.3%; /* Dark Blue AIU Color */
-  --primary-foreground: 210 40% 98%;
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 84% 4.9%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 221.2 83.2% 33.3%;
-  --radius: 0.5rem;
+  --primary: #1e3a8a; /* Dark Blue AIU Color */
+  --primary-foreground: #ffffff;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #1e3a8a;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #020617;
+  --foreground: #f8fafc;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
+  --popover: #0f172a;
+  --popover-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #f8fafc;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #3b82f6;
 }
 
 body {
@@ -32,44 +48,61 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: hsl(210 40% 98%);
-  color: hsl(var(--foreground));
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 @layer base {
-  * {
-    @apply border-gray-200;
-  }
   body {
-    @apply bg-slate-50 text-slate-950;
+    @apply bg-background text-foreground;
   }
 }
 
-.aiu-dark-blue {
-  background-color: #1e3a8a; /* Dark Blue */
-}
-
-.btn-primary {
-  @apply bg-[#1e3a8a] text-white px-4 py-2 rounded-md hover:bg-[#1d4ed8] transition-colors font-medium shadow-sm active:scale-[0.98];
-}
-
+/* Custom Shadcn-like components using CSS variables for dark mode support */
 .card-shadcn {
-  @apply bg-white border border-slate-200 rounded-lg shadow-sm;
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  @apply shadow-sm transition-all duration-200;
 }
 
 .input-shadcn {
-  @apply flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm transition-all duration-200 placeholder:text-slate-400 focus:outline-none focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] disabled:cursor-not-allowed disabled:opacity-50;
+  background-color: var(--card);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  @apply flex h-10 w-full px-3 py-2 text-sm transition-all duration-200 placeholder:text-slate-400 focus:outline-none focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] disabled:cursor-not-allowed disabled:opacity-50;
   outline: none !important;
 }
 
-/* Fix for Chrome autofill thick borders and background colors */
+.dark .input-shadcn {
+  @apply focus:border-blue-500 focus:ring-blue-500;
+}
+
+.btn-primary {
+  @apply bg-[#1e3a8a] text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition-all font-semibold shadow-md active:scale-[0.98] disabled:opacity-50;
+}
+
+.dark .btn-primary {
+  @apply bg-blue-700 hover:bg-blue-600;
+}
+
+/* Fix for Chrome autofill dark mode */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
-  -webkit-text-fill-color: hsl(var(--foreground)) !important;
+  -webkit-box-shadow: 0 0 0 30px var(--card) inset !important;
+  -webkit-text-fill-color: var(--foreground) !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
-
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

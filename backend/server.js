@@ -3,7 +3,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import sequelize from './models/index.js';
 import User from './models/User.js';
+import Suggestion from './models/Suggestion.js';
 import authRoutes from './routes/auth.js';
+import suggestionRoutes from './routes/suggestions.js';
 
 dotenv.config();
 
@@ -18,6 +20,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/suggestions', suggestionRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -29,6 +32,10 @@ const initializeDatabase = async () => {
   try {
     await sequelize.authenticate();
     console.log('✓ Database connection established');
+
+    // Define associations
+    User.hasMany(Suggestion, { foreignKey: 'userId', as: 'suggestions' });
+    Suggestion.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
     // Sync models with database
     await sequelize.sync({ alter: false });

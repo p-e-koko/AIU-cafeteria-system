@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { menuService } from '../services/api';
 import { Calendar, Utensils, Info, ArrowRight } from 'lucide-react';
 
+const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 const Menu = () => {
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeDay, setActiveDay] = useState('Monday');
-  
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 
   useEffect(() => {
     fetchMenu();

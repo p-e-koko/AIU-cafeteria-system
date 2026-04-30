@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Suggestions from './pages/Suggestions';
 import AdminSuggestions from './pages/AdminSuggestions';
 import Feedback from './pages/Feedback';
+import Menu from './pages/Menu';
 import Summaries from './pages/Summaries';
 import LoginPage from './LoginPage';
 import { authService } from './services/api';
@@ -127,6 +128,14 @@ function App() {
                   element={
                     <ProtectedRoute user={user}>
                       <Feedback user={user} />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/menu"
+                  element={
+                    <ProtectedRoute user={user}>
+                      <Menu />
                     </ProtectedRoute>
                   }
                 />

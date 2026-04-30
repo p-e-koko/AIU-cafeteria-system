@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Utensils, MessageSquare, ClipboardList, LogOut, Shield, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, Utensils, MessageSquare, ClipboardList, LogOut, Shield, ChevronRight, Calendar } from 'lucide-react';
 
 const Navbar = ({ user, onLogout }) => {
   const navigate = useNavigate();
@@ -51,10 +51,12 @@ const Sidebar = ({ user }) => {
   
   const baseMenuItems = [
     { icon: <LayoutDashboard className="w-5 h-5" />, label: 'Dashboard', path: '/' },
+    { icon: <Calendar className="w-5 h-5" />, label: 'Daily Menu', path: '/menu' },
     { icon: <Utensils className="w-5 h-5" />, label: 'Menu Suggestions', path: '/suggestions' },
     { icon: <MessageSquare className="w-5 h-5" />, label: 'Feedback', path: '/feedback' },
     { icon: <ClipboardList className="w-5 h-5" />, label: 'Summaries', path: '/summaries' },
   ];
+
 
   const adminMenuItems = [
     { icon: <Shield className="w-5 h-5" />, label: 'Admin Dashboard', path: '/admin/dashboard' },

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Navbar, Sidebar } from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Suggestions from './pages/Suggestions';
+import AdminSuggestions from './pages/AdminSuggestions';
 import Feedback from './pages/Feedback';
 import Summaries from './pages/Summaries';
 import LoginPage from './LoginPage';
@@ -89,6 +90,36 @@ function App() {
                     <ProtectedRoute user={user}>
                       <Suggestions user={user} />
                     </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/suggestions"
+                  element={
+                    <AdminRoute user={user}>
+                      <AdminSuggestions />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/dashboard"
+                  element={
+                    <AdminRoute user={user}>
+                      <div className="p-4">
+                        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+                        <p className="mt-2 text-gray-600">Placeholder for overall statistics and system management.</p>
+                      </div>
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/analytics"
+                  element={
+                    <AdminRoute user={user}>
+                      <div className="p-4">
+                        <h1 className="text-2xl font-bold">Analytics</h1>
+                        <p className="mt-2 text-gray-600">Placeholder for feedback charts and trends.</p>
+                      </div>
+                    </AdminRoute>
                   }
                 />
                 <Route

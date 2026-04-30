@@ -52,4 +52,17 @@ export const authService = {
   },
 };
 
+// Suggestion service
+export const suggestionService = {
+  submit: (suggestionData) =>
+    api.post('/suggestions', suggestionData),
+
+  getAll: () =>
+    api.get('/suggestions'),
+
+  updateStatus: (id, status) =>
+    api.put(`/suggestions/${id}/status`, { status }),
+};
+
 export default api;
+

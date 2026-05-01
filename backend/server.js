@@ -4,8 +4,13 @@ import dotenv from 'dotenv';
 import sequelize from './models/index.js';
 import User from './models/User.js';
 import Suggestion from './models/Suggestion.js';
+import MenuItem from './models/MenuItem.js';
+import Feedback from './models/Feedback.js';
+
 import authRoutes from './routes/auth.js';
 import suggestionRoutes from './routes/suggestions.js';
+import menuRoutes from './routes/menu.js';
+import feedbackRoutes from './routes/feedback.js';
 
 dotenv.config();
 
@@ -21,6 +26,8 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/suggestions', suggestionRoutes);
+app.use('/api/menu', menuRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -37,11 +44,51 @@ const initializeDatabase = async () => {
     User.hasMany(Suggestion, { foreignKey: 'userId', as: 'suggestions' });
     Suggestion.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
+    User.hasMany(Feedback, { foreignKey: 'userId', as: 'feedbacks' });
+    Feedback.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
+    MenuItem.hasMany(Feedback, { foreignKey: 'menuItemId', as: 'feedbacks' });
+    Feedback.belongsTo(MenuItem, { foreignKey: 'menuItemId', as: 'menuItem' });
+
     // Sync models with database
     await sequelize.sync({ alter: false });
     console.log('✓ Database models synced');
 
-    // Create a demo user if it doesn't exist (optional)
+    // Create demo data if empty
+    const menuCount = await MenuItem.count();
+    if (menuCount === 0) {
+      const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      const menuData = [];
+
+      days.forEach(day => {
+        menuData.push({
+          dayOfWeek: day,
+          mealType: 'Breakfast',
+          name: 'Healthy Start Platter',
+          description: 'Avocado toast with poached egg, fresh berries, and Greek yogurt.',
+          imageUrl: '/images/breakfast.png'
+        });
+        menuData.push({
+          dayOfWeek: day,
+          mealType: 'Lunch',
+          name: 'Mediterranean Chicken Bowl',
+          description: 'Grilled chicken, quinoa, roasted vegetables, and lemon tahini dressing.',
+          imageUrl: '/images/lunch.png'
+        });
+        menuData.push({
+          dayOfWeek: day,
+          mealType: 'Dinner',
+          name: 'Pan-Seared Salmon',
+          description: 'Fresh salmon with asparagus, garlic mashed potatoes, and herb butter.',
+          imageUrl: '/images/dinner.png'
+        });
+      });
+
+      await MenuItem.bulkCreate(menuData);
+      console.log('✓ Demo menu data created');
+    }
+
+    // Create a demo user if it doesn't exist
     const demoUserExists = await User.findOne({ where: { email: 'demo@aiu.edu' } });
     if (!demoUserExists) {
       await User.create({
@@ -50,7 +97,7 @@ const initializeDatabase = async () => {
         password: 'password123',
         role: 'Student',
       });
-      console.log('✓ Demo user created (email: demo@aiu.edu, password: password123)');
+      console.log('✓ Demo user created');
     }
 
     // Create a demo admin user if it doesn't exist
@@ -62,7 +109,7 @@ const initializeDatabase = async () => {
         password: 'admin123',
         role: 'Admin',
       });
-      console.log('✓ Demo admin created (email: admin@aiu.edu, password: admin123)');
+      console.log('✓ Demo admin created');
     }
   } catch (error) {
     console.error('Database initialization failed:', error);

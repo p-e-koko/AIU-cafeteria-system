@@ -72,15 +72,15 @@ function LoginPage({ onLogin }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-inter">
-      <div className="max-w-md w-full bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden animate-in fade-in zoom-in duration-300">
+    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8 font-inter transition-colors duration-300">
+      <div className="max-w-md w-full bg-card border border-border rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-300">
         <div className="px-8 pt-10 pb-8">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 text-[#1e3a8a] mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-[#1e3a8a] dark:text-blue-400 mb-4 shadow-inner">
               {showRegister ? <UserPlus size={32} /> : <LogIn size={32} />}
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">AIU Cafeteria</h1>
-            <p className="text-slate-500 mt-2">
+            <h1 className="text-3xl font-black text-foreground tracking-tight">AIU Cafeteria</h1>
+            <p className="text-muted-foreground mt-2">
               {showRegister ? 'Create your campus account' : 'Sign in to access the portal'}
             </p>
           </div>
@@ -88,7 +88,7 @@ function LoginPage({ onLogin }) {
           <form onSubmit={showRegister ? handleRegister : handleLogin} className="space-y-5">
             {showRegister && (
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
+                <label className="block text-sm font-bold text-foreground/80 mb-1.5">Full Name</label>
                 <input
                   type="text"
                   required
@@ -102,7 +102,7 @@ function LoginPage({ onLogin }) {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Email Address</label>
+              <label className="block text-sm font-bold text-foreground/80 mb-1.5">Email Address</label>
               <input
                 type="email"
                 required
@@ -115,7 +115,7 @@ function LoginPage({ onLogin }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+              <label className="block text-sm font-bold text-foreground/80 mb-1.5">Password</label>
               <input
                 type="password"
                 required
@@ -129,7 +129,7 @@ function LoginPage({ onLogin }) {
 
             {showRegister && (
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Your Role</label>
+                <label className="block text-sm font-bold text-foreground/80 mb-1.5">Your Role</label>
                 <select
                   className="input-shadcn"
                   value={registerData.role}
@@ -143,7 +143,7 @@ function LoginPage({ onLogin }) {
             )}
 
             {error && (
-              <div className="bg-red-50 border-l-4 border-red-500 p-4 text-red-700 text-sm animate-in slide-in-from-top-1">
+              <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 text-red-700 dark:text-red-400 text-sm animate-in slide-in-from-top-1 rounded-r-lg">
                 {error}
               </div>
             )}
@@ -151,7 +151,7 @@ function LoginPage({ onLogin }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full btn-primary h-11 flex items-center justify-center"
+              className="w-full btn-primary h-12 flex items-center justify-center text-lg"
             >
               {loading ? (
                 <span className="flex items-center">
@@ -167,14 +167,14 @@ function LoginPage({ onLogin }) {
             </button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+          <div className="mt-8 pt-6 border-t border-border text-center">
             <button
               onClick={() => { setShowRegister(!showRegister); setError(''); }}
-              className="text-sm font-medium text-[#1e3a8a] hover:underline"
+              className="text-sm font-bold text-[#1e3a8a] dark:text-blue-400 hover:underline"
             >
               {showRegister ? 'Already have an account? Sign In' : "Don't have an account? Register Now"}
             </button>
-            <p className="mt-4 text-xs text-slate-400">
+            <p className="mt-4 text-xs text-muted-foreground">
               Demo: demo@aiu.edu / password123 or admin@aiu.edu / admin123
             </p>
           </div>

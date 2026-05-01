@@ -64,5 +64,21 @@ export const suggestionService = {
     api.put(`/suggestions/${id}/status`, { status }),
 };
 
+// Menu service
+export const menuService = {
+  getAll: () =>
+    api.get('/menu'),
+};
+
+// Feedback service
+export const feedbackService = {
+  submit: (feedbackData) =>
+    api.post('/feedback', feedbackData),
+
+  getByMenuItem: (menuItemId) =>
+    api.get(`/feedback/${menuItemId}`),
+};
+
 export default api;
+
 

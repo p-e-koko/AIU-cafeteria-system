@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Utensils, MessageSquare, ClipboardList, LogOut, Shield, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, Utensils, MessageSquare, ClipboardList, LogOut, Shield, ChevronRight, Calendar, Sun, Moon, Bell } from 'lucide-react';
 
-const Navbar = ({ user, onLogout }) => {
+const Navbar = ({ user, onLogout, isDarkMode, toggleDarkMode }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -11,28 +11,49 @@ const Navbar = ({ user, onLogout }) => {
   };
 
   return (
-    <nav className="bg-white border-b border-slate-200 fixed w-full z-30 top-0">
-      <div className="px-4 py-3 lg:px-6">
+    <nav className="bg-card/80 backdrop-blur-xl border-b border-border fixed w-full z-30 top-0 transition-all duration-300 shadow-sm">
+      <div className="px-4 py-3 lg:px-8">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-[#1e3a8a] rounded flex items-center justify-center">
-                <Utensils className="text-white w-5 h-5" />
+          <div className="flex items-center space-x-8">
+            <Link to="/" className="flex items-center space-x-3 group">
+              <div className="w-10 h-10 bg-[#1e3a8a] rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-6 transition-transform">
+                <Utensils className="text-white w-6 h-6" />
               </div>
-              <span className="font-bold text-xl tracking-tight text-slate-900 hidden sm:block">AIU Cafeteria</span>
+              <div className="flex flex-col">
+                <span className="font-black text-xl tracking-tighter text-foreground leading-none">AIU CAFETERIA</span>
+                <span className="text-[9px] font-black text-[#1e3a8a] dark:text-blue-400 uppercase tracking-[0.2em]">Student Portal</span>
+              </div>
             </Link>
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
+            <div className="hidden md:flex items-center bg-accent/50 rounded-full px-4 py-1.5 border border-border mr-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 mr-2 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-foreground/70">System Active</span>
+            </div>
+
+            <button className="p-2.5 rounded-xl text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200 relative">
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-card"></span>
+            </button>
+
+            <button
+              onClick={toggleDarkMode}
+              className="p-2.5 rounded-xl text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200 border border-transparent hover:border-border"
+              title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              {isDarkMode ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-blue-600" />}
+            </button>
+
             {user && (
-              <div className="flex items-center space-x-4">
-                <div className="hidden md:flex flex-col items-end mr-2">
-                  <span className="text-sm font-semibold text-slate-900">{user.name}</span>
-                  <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400">{user.role}</span>
+              <div className="flex items-center space-x-3 pl-4 border-l border-border ml-2">
+                <div className="hidden lg:flex flex-col items-end mr-1">
+                  <span className="text-sm font-black text-foreground tracking-tight">{user.name}</span>
+                  <span className="text-[10px] uppercase tracking-wider font-black text-[#1e3a8a] dark:text-blue-400 opacity-70">{user.role}</span>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-200"
+                  className="w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-all duration-200 border border-transparent hover:border-rose-100 dark:hover:border-rose-900/30"
                   title="Logout"
                 >
                   <LogOut className="w-5 h-5" />
@@ -51,6 +72,7 @@ const Sidebar = ({ user }) => {
   
   const baseMenuItems = [
     { icon: <LayoutDashboard className="w-5 h-5" />, label: 'Dashboard', path: '/' },
+    { icon: <Calendar className="w-5 h-5" />, label: 'Daily Menu', path: '/menu' },
     { icon: <Utensils className="w-5 h-5" />, label: 'Menu Suggestions', path: '/suggestions' },
     { icon: <MessageSquare className="w-5 h-5" />, label: 'Feedback', path: '/feedback' },
     { icon: <ClipboardList className="w-5 h-5" />, label: 'Summaries', path: '/summaries' },
@@ -65,10 +87,19 @@ const Sidebar = ({ user }) => {
   const menuItems = user?.role === 'Admin' ? [...baseMenuItems, ...adminMenuItems] : baseMenuItems;
 
   return (
-    <aside className="fixed top-0 left-0 z-20 flex flex-col flex-shrink-0 w-64 h-full pt-16 font-normal duration-75 lg:flex transition-width" aria-label="Sidebar">
-      <div className="relative flex flex-col flex-1 min-h-0 pt-0 bg-white border-r border-slate-200">
-        <div className="flex flex-col flex-1 pt-6 pb-4 overflow-y-auto">
-          <div className="flex-1 px-3 space-y-1 bg-white">
+    <aside className="fixed top-0 left-0 z-20 flex flex-col flex-shrink-0 w-64 h-full pt-16 font-normal duration-75 lg:flex transition-all bg-card border-r border-border" aria-label="Sidebar">
+      <div className="relative flex flex-col flex-1 min-h-0 pt-0">
+        {/* Sidebar Header with Logo */}
+        <div className="px-6 py-8">
+          <div className="relative bg-accent/30 rounded-2xl p-4 border border-border flex items-center justify-center group overflow-hidden">
+            <img src="/logo.png" alt="AIU Logo" className="w-auto h-16 object-contain z-10 group-hover:scale-110 transition-transform duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a8a]/5 to-transparent"></div>
+          </div>
+        </div>
+
+        <div className="flex flex-col flex-1 pb-4 overflow-y-auto">
+          <div className="flex-1 px-4 space-y-1">
+            <p className="px-3 text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-4 opacity-50">Navigation</p>
             <ul className="space-y-1.5">
               {menuItems.map((item) => {
                 const isActive = location.pathname === item.path;
@@ -76,17 +107,17 @@ const Sidebar = ({ user }) => {
                   <li key={item.path}>
                     <Link
                       to={item.path}
-                      className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 group ${
+                      className={`flex items-center px-4 py-3 text-sm font-black rounded-xl transition-all duration-300 group ${
                         isActive 
-                          ? 'bg-blue-50 text-[#1e3a8a]' 
-                          : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                          ? 'bg-[#1e3a8a] text-white shadow-lg shadow-blue-900/20 translate-x-1' 
+                          : 'text-muted-foreground hover:bg-accent hover:text-foreground'
                       }`}
                     >
-                      <span className={`transition duration-75 ${isActive ? 'text-[#1e3a8a]' : 'text-slate-400 group-hover:text-slate-900'}`}>
+                      <span className={`transition-colors duration-300 ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-foreground'}`}>
                         {item.icon}
                       </span>
                       <span className="ml-3 flex-1">{item.label}</span>
-                      {isActive && <ChevronRight className="w-4 h-4 opacity-50" />}
+                      {isActive && <ChevronRight className="w-4 h-4 opacity-70 animate-in slide-in-from-left-2" />}
                     </Link>
                   </li>
                 );
@@ -96,14 +127,14 @@ const Sidebar = ({ user }) => {
         </div>
         
         {user && (
-          <div className="p-4 border-t border-slate-100">
+          <div className="p-4 border-t border-border bg-accent/30">
             <div className="flex items-center space-x-3 px-2">
-              <div className="w-8 h-8 rounded-full bg-[#1e3a8a] flex items-center justify-center text-white font-bold text-xs">
+              <div className="w-10 h-10 rounded-xl bg-[#1e3a8a] flex items-center justify-center text-white font-black text-xs shadow-lg shadow-blue-900/20">
                 {user.name.charAt(0)}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">{user.name}</p>
-                <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                <p className="text-sm font-black text-foreground truncate leading-tight">{user.name}</p>
+                <p className="text-[9px] text-[#1e3a8a] dark:text-blue-400 truncate uppercase tracking-widest font-black opacity-80">{user.role}</p>
               </div>
             </div>
           </div>

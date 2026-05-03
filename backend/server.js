@@ -126,8 +126,8 @@ const startServer = async () => {
   await initializeDatabase();
 
   app.listen(PORT, () => {
-    console.log(`\n🚀 AIU Cafeteria Backend running at http://localhost:${PORT}`);
-    console.log(`📝 CORS enabled for http://localhost:3000\n`);
+    console.log(`\n🚀 AIU Cafeteria Backend running at port ${PORT}`);
+    console.log(`📝 CORS enabled for: ${process.env.CORS_ORIGIN || 'http://localhost:3000'}\n`);
   });
 };
 

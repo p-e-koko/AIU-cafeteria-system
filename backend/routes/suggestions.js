@@ -6,92 +6,113 @@ import { Op } from 'sequelize';
 
 const router = express.Router();
 
-// Create a new suggestion
-router.post('/', verifyToken, async (req, res) => {
+const MAX_DESCRIPTION_LENGTH = 500;
+
+// ── POST /api/suggestions ────────────────────────────────────────────────────
+router.post('/', verifyToken, async (req, res, next) => {
   try {
     const { dishName, mealType, description } = req.body;
 
-    if (!dishName || !mealType || !description) {
-      return res.status(400).json({ message: 'All fields are required' });
+    // Validate: all three fields must be present
+    if (!dishName || !mealType || description === undefined || description === null) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 'VALIDATION_ERROR', message: 'dishName, mealType, and description are required.' },
+      });
+    }
+
+    // Validate: description must not be empty
+    if (description.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 'VALIDATION_ERROR', message: 'Suggestion description cannot be empty.' },
+      });
+    }
+
+    // Validate: description must not exceed 500 characters
+    if (description.length > MAX_DESCRIPTION_LENGTH) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          code: 'VALIDATION_ERROR',
+          message: `Description must be ${MAX_DESCRIPTION_LENGTH} characters or fewer.`,
+        },
+      });
     }
 
     const suggestion = await Suggestion.create({
       dishName,
       mealType,
       description,
-      userId: req.user.id
+      userId: req.user.id,
     });
 
-    res.status(201).json({
-      message: 'Suggestion submitted successfully',
-      suggestion
-    });
+    res.status(201).json({ success: true, suggestion });
   } catch (error) {
-    console.error('Error creating suggestion:', error);
-    res.status(500).json({ message: 'Failed to submit suggestion' });
+    error.code = 'DB_ERROR';
+    next(error);
   }
 });
 
-// Get suggestions
-router.get('/', verifyToken, async (req, res) => {
+// ── GET /api/suggestions ───────────────────────────────────────────────────
+router.get('/', verifyToken, async (req, res, next) => {
   try {
     let suggestions;
 
     if (req.user.role === 'Admin') {
-      // Admin sees all suggestions with user info
       suggestions = await Suggestion.findAll({
         include: [{ model: User, as: 'user', attributes: ['name', 'email'] }],
-        order: [['createdAt', 'DESC']]
+        order: [['createdAt', 'DESC']],
       });
     } else {
-      // Students/Staff see:
-      // 1. All Approved suggestions
-      // 2. Their own suggestions (even if Pending/Rejected)
+      // Students / Staff see approved suggestions plus their own
       suggestions = await Suggestion.findAll({
         where: {
           [Op.or]: [
             { status: 'Approved' },
-            { userId: req.user.id }
-          ]
+            { userId: req.user.id },
+          ],
         },
         include: [{ model: User, as: 'user', attributes: ['name'] }],
-        order: [['createdAt', 'DESC']]
+        order: [['createdAt', 'DESC']],
       });
     }
 
-    res.json(suggestions);
+    res.json({ success: true, suggestions });
   } catch (error) {
-    console.error('Error fetching suggestions:', error);
-    res.status(500).json({ message: 'Failed to fetch suggestions' });
+    error.code = 'DB_ERROR';
+    next(error);
   }
 });
 
-// Update suggestion status (Admin only)
-router.put('/:id/status', verifyToken, requireRole('Admin'), async (req, res) => {
+// ── PUT /api/suggestions/:id/status (Admin only) ───────────────────────────
+router.put('/:id/status', verifyToken, requireRole('Admin'), async (req, res, next) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
 
     if (!['Approved', 'Rejected'].includes(status)) {
-      return res.status(400).json({ message: 'Invalid status' });
+      return res.status(400).json({
+        success: false,
+        error: { code: 'VALIDATION_ERROR', message: 'Status must be “Approved” or “Rejected”.' },
+      });
     }
 
     const suggestion = await Suggestion.findByPk(id);
-
     if (!suggestion) {
-      return res.status(404).json({ message: 'Suggestion not found' });
+      return res.status(404).json({
+        success: false,
+        error: { code: 'NOT_FOUND', message: 'Suggestion not found.' },
+      });
     }
 
     suggestion.status = status;
     await suggestion.save();
 
-    res.json({
-      message: `Suggestion ${status.toLowerCase()} successfully`,
-      suggestion
-    });
+    res.json({ success: true, suggestion });
   } catch (error) {
-    console.error('Error updating suggestion status:', error);
-    res.status(500).json({ message: 'Failed to update suggestion status' });
+    error.code = 'DB_ERROR';
+    next(error);
   }
 });
 

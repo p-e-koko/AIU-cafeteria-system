@@ -11,6 +11,7 @@ import authRoutes from './routes/auth.js';
 import suggestionRoutes from './routes/suggestions.js';
 import menuRoutes from './routes/menu.js';
 import feedbackRoutes from './routes/feedback.js';
+import adminRoutes from './routes/admin.js';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/suggestions', suggestionRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

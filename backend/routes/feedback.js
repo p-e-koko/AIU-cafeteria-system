@@ -2,7 +2,7 @@ import express from 'express';
 import Feedback from '../models/Feedback.js';
 import MenuItem from '../models/MenuItem.js';
 import User from '../models/User.js';
-import { verifyToken } from '../middleware/auth.js';
+import { verifyToken, requireRole } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -44,6 +44,23 @@ router.get('/:menuItemId', verifyToken, async (req, res) => {
     res.json(feedback);
   } catch (error) {
     console.error('Error fetching feedback:', error);
+    res.status(500).json({ message: 'Failed to fetch feedback' });
+  }
+});
+
+// Get all feedback (Admin only)
+router.get('/', verifyToken, requireRole('Admin'), async (req, res) => {
+  try {
+    const feedback = await Feedback.findAll({
+      include: [
+        { model: User, as: 'user', attributes: ['name', 'email'] },
+        { model: MenuItem, as: 'menuItem', attributes: ['name', 'mealType', 'dayOfWeek'] }
+      ],
+      order: [['createdAt', 'DESC']]
+    });
+    res.json(feedback);
+  } catch (error) {
+    console.error('Error fetching all feedback:', error);
     res.status(500).json({ message: 'Failed to fetch feedback' });
   }
 });

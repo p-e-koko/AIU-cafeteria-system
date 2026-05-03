@@ -77,6 +77,21 @@ export const feedbackService = {
 
   getByMenuItem: (menuItemId) =>
     api.get(`/feedback/${menuItemId}`),
+
+  getAll: () =>
+    api.get('/feedback'),
+};
+
+// Admin service
+export const adminService = {
+  getStats: () =>
+    api.get('/admin/stats'),
+
+  getRatingsAnalytics: () =>
+    api.get('/admin/analytics/ratings'),
+
+  getSuggestionsAnalytics: () =>
+    api.get('/admin/analytics/suggestions'),
 };
 
 export default api;

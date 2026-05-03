@@ -7,6 +7,8 @@ import AdminSuggestions from './pages/AdminSuggestions';
 import Feedback from './pages/Feedback';
 import Menu from './pages/Menu';
 import Summaries from './pages/Summaries';
+import AdminDashboard from './pages/AdminDashboard';
+import Analytics from './pages/Analytics';
 import LoginPage from './LoginPage';
 import { authService } from './services/api';
 import './App.css';
@@ -131,10 +133,7 @@ function App() {
                   path="/admin/dashboard"
                   element={
                     <AdminRoute user={user}>
-                      <div className="p-4">
-                        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-                        <p className="mt-2 text-muted-foreground">Placeholder for overall statistics and system management.</p>
-                      </div>
+                      <AdminDashboard />
                     </AdminRoute>
                   }
                 />
@@ -142,10 +141,7 @@ function App() {
                   path="/admin/analytics"
                   element={
                     <AdminRoute user={user}>
-                      <div className="p-4">
-                        <h1 className="text-2xl font-bold">Analytics</h1>
-                        <p className="mt-2 text-muted-foreground">Placeholder for feedback charts and trends.</p>
-                      </div>
+                      <Analytics />
                     </AdminRoute>
                   }
                 />

@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3333/api';
-console.log('Using API Base URL:', API_BASE_URL);
+// Hardcoded for Render deployment
+const API_BASE_URL = 'https://aiu-cafeteria-system-2.onrender.com/api';
+console.log('Using API Base URL (Hardcoded):', API_BASE_URL);
 
 // Create axios instance with default config
 const api = axios.create({

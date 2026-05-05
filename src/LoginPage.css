@@ -70,21 +70,21 @@
 
 .form-group input {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #e0e0e0;
+  padding: 14px 16px;
+  border: none;
   border-radius: 6px;
   font-size: 14px;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: box-shadow 0.3s;
   box-sizing: border-box;
 }
 
 .form-group select {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #e0e0e0;
+  padding: 14px 16px;
+  border: none;
   border-radius: 6px;
   font-size: 14px;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: box-shadow 0.3s;
   box-sizing: border-box;
   background-color: white;
 }
@@ -92,8 +92,7 @@
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
 }
 
 .form-group input:disabled,

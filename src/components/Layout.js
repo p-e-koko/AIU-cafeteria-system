@@ -28,10 +28,6 @@ const Navbar = ({ user, onLogout, isDarkMode, toggleDarkMode, onMenuOpen }) => {
               <div className="w-10 h-10 bg-[#1e3a8a] rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-6 transition-transform shrink-0">
                 <Utensils className="text-white w-6 h-6" />
               </div>
-              <div className="flex flex-col hidden sm:flex">
-                <span className="font-black text-xl tracking-tighter text-foreground leading-none">AIU CAFETERIA</span>
-                <span className="text-[9px] font-black text-[#1e3a8a] dark:text-blue-400 uppercase tracking-[0.2em]">Student Portal</span>
-              </div>
             </Link>
           </div>
 
@@ -115,11 +111,7 @@ const Sidebar = ({ user, isOpen, onClose }) => {
           {/* Logo header — fills the same height as the navbar */}
           <div className="h-16 flex items-center justify-between px-5 border-b border-border shrink-0">
             <Link to="/" className="flex items-center space-x-3" onClick={onClose}>
-              <img src="/logo.png" alt="AIU Logo" className="h-8 w-auto object-contain" />
-              <div className="flex flex-col">
-                <span className="font-black text-sm tracking-tight text-foreground leading-none">AIU CAFETERIA</span>
-                <span className="text-[8px] font-black text-[#1e3a8a] dark:text-blue-400 uppercase tracking-widest">Student Portal</span>
-              </div>
+              <img src="/logo.png" alt="AIU Logo" className="h-10 w-auto object-contain" />
             </Link>
             {/* Close button — mobile only */}
             <button

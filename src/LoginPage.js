@@ -73,7 +73,7 @@ function LoginPage({ onLogin }) {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8 font-inter transition-colors duration-300">
-      <div className="max-w-md w-full bg-card border border-border rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-300">
+      <div className="max-w-lg w-full bg-card border border-border rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-500">
         <div className="px-8 pt-10 pb-8">
           <div className="text-center mb-10">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-[#1e3a8a] dark:text-blue-400 mb-4 shadow-inner">
@@ -87,12 +87,12 @@ function LoginPage({ onLogin }) {
 
           <form onSubmit={showRegister ? handleRegister : handleLogin} className="space-y-5">
             {showRegister && (
-              <div>
+              <div className="form-group">
                 <label className="block text-sm font-bold text-foreground/80 mb-1.5">Full Name</label>
                 <input
                   type="text"
                   required
-                  className="input-shadcn"
+                  className="input-shadcn w-full"
                   placeholder="Enter your full name"
                   value={registerData.name}
                   onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
@@ -101,12 +101,12 @@ function LoginPage({ onLogin }) {
               </div>
             )}
 
-            <div>
+            <div className="form-group">
               <label className="block text-sm font-bold text-foreground/80 mb-1.5">Email Address</label>
               <input
                 type="email"
                 required
-                className="input-shadcn"
+                className="input-shadcn w-full"
                 placeholder="university@aiu.edu"
                 value={showRegister ? registerData.email : email}
                 onChange={(e) => showRegister ? setRegisterData({ ...registerData, email: e.target.value }) : setEmail(e.target.value)}
@@ -114,12 +114,12 @@ function LoginPage({ onLogin }) {
               />
             </div>
 
-            <div>
+            <div className="form-group">
               <label className="block text-sm font-bold text-foreground/80 mb-1.5">Password</label>
               <input
                 type="password"
                 required
-                className="input-shadcn"
+                className="input-shadcn w-full"
                 placeholder="••••••••"
                 value={showRegister ? registerData.password : password}
                 onChange={(e) => showRegister ? setRegisterData({ ...registerData, password: e.target.value }) : setPassword(e.target.value)}
@@ -128,10 +128,10 @@ function LoginPage({ onLogin }) {
             </div>
 
             {showRegister && (
-              <div>
+              <div className="form-group">
                 <label className="block text-sm font-bold text-foreground/80 mb-1.5">Your Role</label>
                 <select
-                  className="input-shadcn"
+                  className="input-shadcn w-full"
                   value={registerData.role}
                   onChange={(e) => setRegisterData({ ...registerData, role: e.target.value })}
                   disabled={loading}
@@ -151,7 +151,7 @@ function LoginPage({ onLogin }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full btn-primary h-12 flex items-center justify-center text-lg"
+              className="w-full btn-primary h-14 flex items-center justify-center text-lg rounded-2xl"
             >
               {loading ? (
                 <span className="flex items-center">

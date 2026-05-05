@@ -71,22 +71,52 @@ body {
 .input-shadcn {
   background-color: var(--card);
   color: var(--foreground);
-  border: none;
-  border-radius: 0.5rem;
-  @apply flex h-10 w-full px-4 py-3 text-sm transition-all duration-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 disabled:cursor-not-allowed disabled:opacity-50;
+  border: none !important;
+  border-radius: 0.75rem;
+  height: 3.5rem !important;
+  width: 100% !important;
+  padding: 0 1.5rem !important;
+  font-size: 1rem !important;
+  display: block !important;
+  transition: all 0.2s ease;
   outline: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
 }
 
-.dark .input-shadcn {
-  @apply focus:ring-blue-500/30;
+.input-shadcn:focus {
+  box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.3) !important;
+}
+
+.dark .input-shadcn:focus {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
 }
 
 .btn-primary {
-  @apply bg-[#1e3a8a] text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition-all font-semibold shadow-md active:scale-[0.98] disabled:opacity-50;
+  background-color: #1e3a8a !important;
+  color: white !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 0.75rem !important;
+  font-weight: 600 !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.btn-primary:hover {
+  background-color: #1e40af !important;
+  transform: translateY(-1px);
 }
 
 .dark .btn-primary {
-  @apply bg-blue-700 hover:bg-blue-600;
+  background-color: #2563eb !important;
+}
+
+.dark .btn-primary:hover {
+  background-color: #3b82f6 !important;
 }
 
 /* Fix for Chrome autofill dark mode */
@@ -94,9 +124,16 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px var(--card) inset !important;
-  -webkit-text-fill-color: var(--foreground) !important;
-  transition: background-color 5000s ease-in-out 0s;
+  -webkit-box-shadow: 0 0 0 50px #ffffff inset !important;
+  -webkit-text-fill-color: #0f172a !important;
+}
+
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 50px #0f172a inset !important;
+  -webkit-text-fill-color: #f8fafc !important;
 }
 
 .no-scrollbar::-webkit-scrollbar {

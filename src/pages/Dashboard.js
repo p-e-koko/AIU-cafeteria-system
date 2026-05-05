@@ -28,16 +28,16 @@ const Dashboard = ({ user }) => {
   return (
     <div className="max-w-7xl mx-auto space-y-12 animate-in fade-in duration-700">
       {/* Welcome Hero */}
-      <section className="relative overflow-hidden rounded-[2rem] bg-[#1e3a8a] dark:bg-blue-900 p-8 md:p-12 text-white shadow-2xl shadow-blue-900/20">
+      <section className="relative overflow-hidden rounded-[2rem] bg-[#1e3a8a] dark:bg-blue-900 p-6 md:p-12 text-white shadow-2xl shadow-blue-900/20">
         <div className="relative z-10 max-w-2xl">
           <div className="inline-flex items-center space-x-2 bg-blue-400/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
             <ShieldCheck className="w-3 h-3" />
             <span>Official Campus Portal</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4 leading-tight">
+          <h1 className="text-3xl md:text-5xl font-black tracking-tight mb-4 leading-tight">
             Hello, {user?.name.split(' ')[0]}! 👋
           </h1>
-          <p className="text-blue-100/80 text-lg md:text-xl leading-relaxed mb-8">
+          <p className="text-blue-100/80 text-base md:text-xl leading-relaxed mb-8">
             Welcome back to the AIU Cafeteria. We're serving something special today. Check out the menu and share your thoughts!
           </p>
           <div className="flex flex-wrap gap-4">

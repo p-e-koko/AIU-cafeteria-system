@@ -68,7 +68,7 @@ const AdminDashboard = () => {
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500">
       <header>
-        <h1 className="text-4xl font-black text-foreground mb-2">System Overview</h1>
+        <h1 className="text-2xl md:text-4xl font-black text-foreground mb-2">System Overview</h1>
         <p className="text-muted-foreground">Monitor cafeteria performance and student feedback.</p>
       </header>
 

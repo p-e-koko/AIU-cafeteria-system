@@ -54,7 +54,7 @@ const AdminSuggestions = () => {
             <Shield className="w-6 h-6" />
             <span className="text-xs font-black uppercase tracking-[0.3em]">Admin Portal</span>
           </div>
-          <h1 className="text-5xl font-black text-foreground tracking-tighter">Review Queue</h1>
+          <h1 className="text-3xl md:text-5xl font-black text-foreground tracking-tighter">Review Queue</h1>
           <p className="text-muted-foreground mt-3 text-lg">Manage incoming menu suggestions from the community.</p>
         </div>
         <div className="flex items-center bg-accent/50 rounded-full px-5 py-2.5 border border-border">

@@ -9,11 +9,11 @@
 
 .login-card {
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  padding: 40px;
+  padding: 48px;
   width: 100%;
-  max-width: 400px;
+  max-width: 480px;
   animation: slideUp 0.4s ease-out;
 }
 
@@ -70,20 +70,20 @@
 
 .form-group input {
   width: 100%;
-  padding: 14px 16px;
+  padding: 20px 24px;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: 10px;
+  font-size: 16px;
   transition: box-shadow 0.3s;
   box-sizing: border-box;
 }
 
 .form-group select {
   width: 100%;
-  padding: 14px 16px;
+  padding: 20px 24px;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: 10px;
+  font-size: 16px;
   transition: box-shadow 0.3s;
   box-sizing: border-box;
   background-color: white;
@@ -113,11 +113,11 @@
 
 .login-button {
   width: 100%;
-  padding: 12px;
+  padding: 16px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -168,7 +168,8 @@
 
 @media (max-width: 480px) {
   .login-card {
-    padding: 30px 20px;
+    padding: 32px 24px;
+    max-width: 100%;
   }
 
   .login-header h1 {

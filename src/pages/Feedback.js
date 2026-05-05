@@ -67,7 +67,7 @@ const Feedback = ({ user }) => {
 
   const StarRating = ({ value, onChange, disabled }) => {
     return (
-      <div className="flex space-x-2">
+      <div className="flex space-x-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             key={star}
@@ -96,7 +96,7 @@ const Feedback = ({ user }) => {
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-[1.5rem] bg-blue-50 dark:bg-blue-900/20 text-[#1e3a8a] dark:text-blue-400 mx-auto mb-2 shadow-inner">
           <MessageSquare className="w-8 h-8" />
         </div>
-        <h1 className="text-4xl font-black tracking-tight text-foreground">How was your meal?</h1>
+        <h1 className="text-2xl md:text-4xl font-black tracking-tight text-foreground">How was your meal?</h1>
         <p className="text-muted-foreground text-lg">Your feedback helps us improve the quality of cafeteria service.</p>
       </div>
 
@@ -138,7 +138,7 @@ const Feedback = ({ user }) => {
                 </div>
               </div>
               
-              <div className="md:col-span-3 p-10 flex flex-col justify-between">
+              <div className="md:col-span-3 p-6 md:p-10 flex flex-col justify-between">
                 <div className="hidden md:block mb-8">
                   <span className="text-[10px] font-black text-[#1e3a8a] dark:text-blue-400 uppercase tracking-[0.2em] mb-2 block">{item.mealType}</span>
                   <h3 className="text-3xl font-black text-foreground tracking-tight">{item.name}</h3>

@@ -36,6 +36,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -99,9 +100,9 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
-        <Navbar user={user} onLogout={handleLogout} isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+        <Navbar user={user} onLogout={handleLogout} isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} onMenuOpen={() => setIsSidebarOpen(true)} />
         <div className="flex pt-16 overflow-hidden">
-          <Sidebar user={user} />
+          <Sidebar user={user} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
           <main className="relative w-full h-full overflow-y-auto bg-background lg:ml-64 min-h-[calc(100vh-4rem)]">
             <div className="p-4 md:p-6 lg:p-8">
               <Routes>

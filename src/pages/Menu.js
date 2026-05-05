@@ -45,7 +45,7 @@ const Menu = () => {
           </span>
         </div>
       </div>
-      <div className="p-8">
+      <div className="p-5 md:p-8">
         <h3 className="text-2xl font-black text-foreground mb-2 group-hover:text-[#1e3a8a] dark:group-hover:text-blue-400 transition-colors">{item.name}</h3>
         <p className="text-muted-foreground text-sm leading-relaxed mb-8">{item.description}</p>
         
@@ -70,7 +70,7 @@ const Menu = () => {
             <Calendar className="w-6 h-6" />
             <span className="text-xs font-black uppercase tracking-[0.3em]">Weekly Schedule</span>
           </div>
-          <h1 className="text-5xl font-black text-foreground tracking-tighter">Cafeteria Menu</h1>
+          <h1 className="text-3xl sm:text-5xl font-black text-foreground tracking-tighter">Cafeteria Menu</h1>
           <p className="text-muted-foreground mt-3 text-lg">Fresh, healthy, and delicious meals served daily.</p>
         </div>
       </div>
@@ -113,7 +113,7 @@ const Menu = () => {
       )}
 
       {/* Footer Info */}
-      <div className="bg-[#1e3a8a] dark:bg-blue-950 rounded-[2rem] p-10 flex flex-col md:flex-row items-center gap-8 shadow-xl text-white">
+      <div className="bg-[#1e3a8a] dark:bg-blue-950 rounded-[2rem] p-6 md:p-10 flex flex-col md:flex-row items-center gap-6 md:gap-8 shadow-xl text-white text-center md:text-left">
         <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-inner shrink-0 border border-white/20">
           <Info className="text-white w-8 h-8" />
         </div>
